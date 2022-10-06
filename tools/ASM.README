@@ -2,13 +2,14 @@ There are 8 registers. R0 is always reads 0, and writing to it has no effect.
 
 Instructions:
 
-ADD RD RX RY     | RD = RX + RY                  | 001
-ADDI RD RX N     | RD = RX + N                   | 010
-NAND RD RX RY    | RD = RX NAND RY               | 011
-SW RI RD N       | STORE RI TO RD+N              | 100
-LW RD RI N       | LOAD RD FROM RI+N             | 101
-BEQ RX RY N      | JUMP IP+N IF RX == RY         | 110
-JMP RD RP        | STORE IP+1 IN RP AND IP=RD    | 111
+ADD RD RX RY     | RD = RX + RY                        | 000
+ADDI RD RX N     | RD = RX + N                         | 001
+NAND RD RX RY    | RD = RX NAND RY                     | 010
+LUI RD N         | STORE 10 bit N in top 10 bit of RD  | 011
+SW RI RD N       | STORE RI TO RD+N                    | 100
+LW RD RI N       | LOAD RD FROM RI+N                   | 101
+BEQ RX RY N      | JUMP IP+1+N IF RX == RY             | 110
+JMP RP RD        | STORE IP+1 IN RP AND IP=RD          | 111
 
 Format of 16 bit command
 [ 3 bits  ][ 3 bits  ][ 3 bits  ][ 4 bits  ][ 3 bits  ]
@@ -16,6 +17,9 @@ Format of 16 bit command
 
 [ 3 bits  ][ 3 bits  ][ 3 bits  ][ 7 bits             ]
 [ op code ][ R       ][ R       ][ N                  ]
+
+[ 3 bits  ][ 3 bits  ][ 10 bits                       ]
+[ op code ][ R       ][ N                             ]
 
 Format of the instruction in the code:
 label: op a0 a1 a2 # comment
