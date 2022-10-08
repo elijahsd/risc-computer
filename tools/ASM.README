@@ -9,11 +9,11 @@ LUI RD N         | STORE 10 bit N in top 10 bit of RD  | 011
 SW RI RD N       | STORE RI TO RD+N                    | 100
 LW RD RI N       | LOAD RD FROM RI+N                   | 101
 BEQ RX RY N      | JUMP IP+1+N IF RX == RY             | 110
-JMP RP RD        | STORE IP+1 IN RP AND IP=RD          | 111
+JALR RP RD       | STORE IP+1 IN RP AND IP=RD          | 111
 
 Format of 16 bit command
 [ 3 bits  ][ 3 bits  ][ 3 bits  ][ 4 bits  ][ 3 bits  ]
-[ op code ][ R       ][ R       ][         ][ R       ]
+[ op code ][ R       ][ R       ][ 0       ][ R       ]
 
 [ 3 bits  ][ 3 bits  ][ 3 bits  ][ 7 bits             ]
 [ op code ][ R       ][ R       ][ N                  ]
@@ -21,11 +21,14 @@ Format of 16 bit command
 [ 3 bits  ][ 3 bits  ][ 10 bits                       ]
 [ op code ][ R       ][ N                             ]
 
+[ 3 bits  ][ 3 bits  ][ 3 bits  ][ 7 bits             ]
+[ op code ][ R       ][ R       ][ 0                  ]
+
 Format of the instruction in the code:
 label: op a0 a1 a2 # comment
 
 All numbers are 16 bit
-Every memory address is HW address (8 bit per value), the first command is placed at address 0, if the first command is not a jump the second command will be placed at the address 2.
+Every memory address is 16 bit, the first command is placed at address 0, if the first command is not a jump the second command will be placed at the address 2.
 
 Structure:
 
@@ -37,18 +40,20 @@ Structure:
 Example:
 
 .DATA                # Data section
-VAR0: 0              # Store 0 (0x00 0x00), VAR0 is the address (0x0002 as the first two bytes are taken by JMP to START)
-VAR1: 1              # Store 1 (0x00 0x01), VAR1 = 0x0004
+VAR0: 0              # Store 0 (0x00 0x00), VAR0 is the address (0x0004 as the first six bytes are taken by JMP to START)
+VAR1: 1              # Store 1 (0x00 0x01), VAR1 = 0x0005
 5 8 11 128           # Store four more 16bit value in order
 VIDEO: 45000         # This value is an address in video memory
 .TEXT                # Code section
 START:               # START label is mandatory, the first jump will be done here
 ADD  R1 R0 R0        # Store 0 in R1
-ADDI R2 R0 VIDEO     # Store address of VIDEO (0x000E) in R2
-LW   R3 R2 0         # Load the content of 0x000E (45000) to R3
+LUI  R2 VIDEO        # Store address of VIDEO (0x000A) in R2
+ADDI R2 R2 VIDEO     # Store address of VIDEO (0x000A) in R2
+LW   R3 R2 0         # Load the content of 0x000A (45000) to R3
 SW   R1 R3 0         # Store the content of R1 (0) by address 45000, put it on screen
 END:                 # just a label
-ADDI R4 R0 END       # Put the address of END to R4
-JMP  R4 R0           # Jump to END, infinite loop
+LUI  R4 END          # Put the address of END to R4
+ADDI R4 R4 END       # Put the address of END to R4
+JALR R4 R0           # Jump to END, infinite loop
 
 
