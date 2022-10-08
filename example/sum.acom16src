@@ -1,0 +1,30 @@
+# Add numbers from array a together
+# put answer to the screen
+.DATA
+A: 0 1 2 4
+VIDEO: 32768 32769 32770 32771
+.TEXT
+START:
+ADDI R1 R0 5     # number of iterations plus one
+ADD  R2 R0 R0    # current interation
+ADD  R3 R0 R0    # R3 to keep sum
+LUI  R4 A        # put memory address of A to R4
+ADDI R4 R4 A     #
+LOOP:
+LW   R5 R4 0     # Load A[i]
+ADD  R3 R3 R5    # Add the next number
+ADDI R4 R4 1     # Increment address
+ADDI R2 R2 1     # Increment the iteration
+BEQ  R1 R2 EXIT  # Exit after fourth iteration
+LUI  R6 LOOP     # Load address of LOOP
+ADDI R6 R6 LOOP  #
+JALR R6 R0       # Jump to LOOP
+EXIT:
+LUI  R6 VIDEO    # Load address of VIDEO
+ADDI R6 R6 VIDEO #
+LW   R7 R6 0     # Load VIDEO variable to R7
+SW   R3 R7 0     # Store sum on address in R7
+NOP:
+LUI  R6 NOP      # Infinite loop
+ADDI R6 R6 NOP   #
+JALR R6 R0       #
