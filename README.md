@@ -5,3 +5,5 @@ This is a learning project to create a computer of Von Neumann architecture. The
 ![Main Layout](https://github.com/elijahsd/risc-computer/blob/main/schematics/Capture0.PNG)
 ![Display](https://github.com/elijahsd/risc-computer/blob/main/schematics/Capture1.PNG)
 ![Multiplexor](https://github.com/elijahsd/risc-computer/blob/main/schematics/Capture2.PNG)
+
+![Photo](https://github.com/elijahsd/risc-computer/blob/main/schematics/photo00.jpg)
