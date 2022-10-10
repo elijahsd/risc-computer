@@ -64,6 +64,9 @@ i2cset -y 0 0x21 0x09 0x00
 # Enable programming
 i2cset -y 0 0x23 0x09 0x05
 
+# Wait for CPU to enter the reset state
+sleep 1
+
 while [ "$nbytes" -ne 0 ]; do
   read_mem $saddr
   nbytes=$(($nbytes - 1))

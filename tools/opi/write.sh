@@ -55,6 +55,9 @@ i2cset -y 0 0x22 0x09 0x00
 # Switch Programmer on
 i2cset -y 0 0x23 0x09 0x01
 
+# Wait for CPU to enter the reset state
+sleep 1
+
 hexdump -v -e '/1 "%u\n"' $bfile | while read c; do
     write_mem $saddr $c
     saddr=$(($saddr + 1))
