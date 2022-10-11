@@ -28,7 +28,7 @@ Format of the instruction in the code:
 label: op a0 a1 a2 # comment
 
 All numbers are 16 bit
-Every memory address is 16 bit, the first command is placed at address 0, if the first command is not a jump the second command will be placed at the address 2.
+Every memory address is 16 bit, the first command is placed at address 0, if the first command is not a jump the second command will be placed at the physical address 2 and fetched at pc = 1.
 
 Structure:
 
@@ -54,6 +54,6 @@ SW   R1 R3 0         # Store the content of R1 (0) by address 45000, put it on s
 END:                 # just a label
 LUI  R4 END          # Put the address of END to R4
 ADDI R4 R4 END       # Put the address of END to R4
-JALR R4 R0           # Jump to END, infinite loop
+JALR R0 R4           # Jump to END, infinite loop
 
 

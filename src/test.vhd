@@ -33,7 +33,8 @@ begin
 				 '1' after  8000 ns, '0' after  8250 ns, '1' after  8500 ns, '0' after  8750 ns,
 				 '1' after  9000 ns, '0' after  9250 ns, '1' after  9500 ns, '0' after  9750 ns,
 				 '1' after 10000 ns, '0' after 10250 ns, '1' after 10500 ns, '0' after 10750 ns,
-				 '1' after 11000 ns, '0' after 11250 ns, '1' after 11500 ns, '0' after 11750 ns;
+				 '1' after 11000 ns, '0' after 11250 ns, '1' after 11500 ns, '0' after 11750 ns,
+				 '1' after 12000 ns, '0' after 12250 ns, '1' after 12500 ns, '0' after 12750 ns;
 
 --	data <= "00100100" after   25 ns, "00000011" after  500 ns, -- ADDI R1 R0 3
 --			"00101000" after 1000 ns, "10000001" after 1500 ns, -- ADDI R2 R1 1
@@ -72,7 +73,7 @@ begin
 -- 000b: 1000011110000000    | SW R1 R7 0
 -- 000c: 0111100000000000    | LUI R6 0
 -- 000d: 0011101100001100    | ADDI R6 R6 12
--- 000e: 1111100000000000    | JALR R6 R0
+-- 000e: 1110001100000000    | JALR R0 R6
 
 data <= 
 "01100100" after 25 ns, "00000000" after 500 ns,
@@ -82,11 +83,11 @@ data <=
 "01111000" after 4000 ns, "00000000" after 4500 ns,
 "00111011" after 5000 ns, "00000011" after 5500 ns,
 "10111111" after 6000 ns, "00000000" after 6500 ns,
-                     "10000000" after 6750 ns, "00000000" after 7250 ns,
-"10000111" after 7500 ns, "10000000" after 8000 ns,
-"01111000" after 8500 ns, "00000000" after 9000 ns,
-"00111011" after 9500 ns, "00001100" after 10000 ns,
-"11111000" after 10500 ns, "00000000" after 11000 ns;
+"10000000" after 6750 ns, "00000000" after 7250 ns, -- data to read
+"10000111" after 7500 ns, "10000000" after 8000 ns, -- skip cycle for writing
+"01111000" after 9000 ns, "00000000" after 9500 ns,
+"00111011" after 10000 ns, "00001100" after 10500 ns,
+"11100011" after 11000 ns, "00000000" after 11500 ns;
 
 	wait;
 end process stimulus;

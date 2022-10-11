@@ -18,7 +18,7 @@ ADDI R2 R2 1     # Increment the iteration
 BEQ  R1 R2 EXIT  # Exit after fourth iteration
 LUI  R6 LOOP     # Load address of LOOP
 ADDI R6 R6 LOOP  #
-JALR R6 R0       # Jump to LOOP
+JALR R0 R6       # Jump to LOOP
 EXIT:
 LUI  R6 VIDEO    # Load address of VIDEO
 ADDI R6 R6 VIDEO #
@@ -27,4 +27,4 @@ SW   R3 R7 0     # Store sum on address in R7
 NOP:
 LUI  R6 NOP      # Infinite loop
 ADDI R6 R6 NOP   #
-JALR R6 R0       #
+JALR R0 R6       #
