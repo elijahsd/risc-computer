@@ -163,8 +163,13 @@ class Translator(object):
                         raise Exception("Immediate is out of range")
                 discmd = "{} {}".format(discmd, imm)
                 if imm < 0:
-                    imm = - imm
-                    imm = imm | 64
+                    imm = -imm
+                    imm = imm - 1
+                    imm = ~imm
+                    if (self.CMDS[tmp[0]].isize == 7):
+                        imm = imm & 0x007F
+                    if (self.CMDS[tmp[0]].isize == 10):
+                        imm = imm & 0x03FF
                 cmd = cmd | imm
             self.binout.append(cmd)
             self.asm.append(discmd)
