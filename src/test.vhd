@@ -5,8 +5,10 @@ entity test_bench is
 end entity test_bench;
 
 architecture test_cpu of test_bench is
-	signal clk     : std_logic;
 	signal reset   : std_logic;
+
+--	signal disp0   : std_logic_vector(0 to 8);
+--	signal disp1   : std_logic_vector(0 to 8);
 
 	signal address : std_logic_vector(0 to 15);
 	signal data    : std_logic_vector(0 to 7);
@@ -17,24 +19,26 @@ architecture test_cpu of test_bench is
 
 begin
 	dut : entity work.CTRL(behavioral)
-	port map ( clk, reset, address, data, we_bar, mem_clk );
+	port map ( reset, 
+	-- disp0, disp1,
+	address, data, we_bar, mem_clk );
 
 stimulus : process is
 begin
-	reset <= '0';
-	clk <= '0', '1' after    25 ns, '0' after   250 ns, '1' after   500 ns, '0' after   750 ns,
-				 '1' after  1000 ns, '0' after  1250 ns, '1' after  1500 ns, '0' after  1750 ns,
-				 '1' after  2000 ns, '0' after  2250 ns, '1' after  2500 ns, '0' after  2750 ns,
-				 '1' after  3000 ns, '0' after  3250 ns, '1' after  3500 ns, '0' after  3750 ns,
-				 '1' after  4000 ns, '0' after  4250 ns, '1' after  4500 ns, '0' after  4750 ns,
-				 '1' after  5000 ns, '0' after  5250 ns, '1' after  5500 ns, '0' after  5750 ns,
-				 '1' after  6000 ns, '0' after  6250 ns, '1' after  6500 ns, '0' after  6750 ns,
-				 '1' after  7000 ns, '0' after  7250 ns, '1' after  7500 ns, '0' after  7750 ns,
-				 '1' after  8000 ns, '0' after  8250 ns, '1' after  8500 ns, '0' after  8750 ns,
-				 '1' after  9000 ns, '0' after  9250 ns, '1' after  9500 ns, '0' after  9750 ns,
-				 '1' after 10000 ns, '0' after 10250 ns, '1' after 10500 ns, '0' after 10750 ns,
-				 '1' after 11000 ns, '0' after 11250 ns, '1' after 11500 ns, '0' after 11750 ns,
-				 '1' after 12000 ns, '0' after 12250 ns, '1' after 12500 ns, '0' after 12750 ns;
+	reset <= '1', '0' after 25 ns;
+--	clk <= '0', '1' after    25 ns, '0' after   250 ns, '1' after   500 ns, '0' after   750 ns,
+--				 '1' after  1000 ns, '0' after  1250 ns, '1' after  1500 ns, '0' after  1750 ns,
+--				 '1' after  2000 ns, '0' after  2250 ns, '1' after  2500 ns, '0' after  2750 ns,
+--				 '1' after  3000 ns, '0' after  3250 ns, '1' after  3500 ns, '0' after  3750 ns,
+--				 '1' after  4000 ns, '0' after  4250 ns, '1' after  4500 ns, '0' after  4750 ns,
+--				 '1' after  5000 ns, '0' after  5250 ns, '1' after  5500 ns, '0' after  5750 ns,
+--				 '1' after  6000 ns, '0' after  6250 ns, '1' after  6500 ns, '0' after  6750 ns,
+--				 '1' after  7000 ns, '0' after  7250 ns, '1' after  7500 ns, '0' after  7750 ns,
+--				 '1' after  8000 ns, '0' after  8250 ns, '1' after  8500 ns, '0' after  8750 ns,
+--				 '1' after  9000 ns, '0' after  9250 ns, '1' after  9500 ns, '0' after  9750 ns,
+--				 '1' after 10000 ns, '0' after 10250 ns, '1' after 10500 ns, '0' after 10750 ns,
+--				 '1' after 11000 ns, '0' after 11250 ns, '1' after 11500 ns, '0' after 11750 ns,
+--				 '1' after 12000 ns, '0' after 12250 ns, '1' after 12500 ns, '0' after 12750 ns;
 
 --	data <= "00100100" after   25 ns, "00000011" after  500 ns, -- ADDI R1 R0 3
 --			"00101000" after 1000 ns, "10000001" after 1500 ns, -- ADDI R2 R1 1
@@ -59,6 +63,20 @@ begin
 --			"00101000" after 1000 ns, "00000111" after 1500 ns, -- ADDI R2 R0 7
 --			"10001000" after 2000 ns, "11111111" after 2500 ns; -- SW R2 R1 -1 (address = 3-1=2 (4 and 5), data = 00000000 and 00000111)
 
+-- data <= 
+-- "01100100" after 25 ns, "00000000" after 500 ns,
+-- "00100100" after 1000 ns, "10000111" after 1500 ns,
+-- "11100000" after 2000 ns, "10000000" after 2500 ns,
+-- "00100100" after 3000 ns, "00000101" after 3500 ns,
+-- "01111000" after 4000 ns, "00000000" after 4500 ns,
+-- "00111011" after 5000 ns, "00000011" after 5500 ns,
+-- "10111111" after 6000 ns, "00000000" after 6500 ns,
+-- "10000000" after 6750 ns, "00000000" after 7250 ns, -- data to read
+-- "10000111" after 7500 ns, "10000000" after 8000 ns, -- skip cycle for writing
+-- "01111000" after 9000 ns, "00000000" after 9500 ns,
+-- "00111011" after 10000 ns, "00001100" after 10500 ns,
+-- "11100011" after 11000 ns, "00000000" after 11500 ns;
+
 -- 0000: 0110010000000000    | LUI R1 0
 -- 0001: 0010010010000111    | ADDI R1 R1 7
 -- 0002: 1110000010000000    | JALR R0 R1
@@ -75,23 +93,29 @@ begin
 -- 000d: 0011101100001100    | ADDI R6 R6 12
 -- 000e: 1110001100000000    | JALR R0 R6
 
-data <= 
-"01100100" after 25 ns, "00000000" after 500 ns,
-"00100100" after 1000 ns, "10000111" after 1500 ns,
-"11100000" after 2000 ns, "10000000" after 2500 ns,
-"00100100" after 3000 ns, "00000101" after 3500 ns,
-"01111000" after 4000 ns, "00000000" after 4500 ns,
-"00111011" after 5000 ns, "00000011" after 5500 ns,
-"10111111" after 6000 ns, "00000000" after 6500 ns,
-"10000000" after 6750 ns, "00000000" after 7250 ns, -- data to read
-"10000111" after 7500 ns, "10000000" after 8000 ns, -- skip cycle for writing
-"01111000" after 9000 ns, "00000000" after 9500 ns,
-"00111011" after 10000 ns, "00001100" after 10500 ns,
-"11100011" after 11000 ns, "00000000" after 11500 ns;
+-- 12 cycle pass
+data_int <= 
+"01100100" after 25 ns, "00000000" after 1000 ns,
+"00100100" after 6000 ns, "10000111" after 6900 ns,
+"11100000" after 11700 ns, "10000000" after 12600 ns,
+"00100100" after 17400 ns, "00000101" after 18300 ns,
+"01111000" after 23100 ns, "00000000" after 24000 ns,
+"00111011" after 28800 ns, "00000011" after 29700 ns,
+"10111111" after 34500 ns, "00000000" after 35400 ns,
+"01000000" after 36000 ns, "00000000" after 37000 ns, -- data to read
+"10000111" after 40200 ns, "10000000" after 41100 ns,
+"01111000" after 45900 ns, "00000000" after 46800 ns,
+"00111011" after 51600 ns, "00001100" after 52500 ns,
+"11100011" after 57300 ns, "00000000" after 58200 ns;
+
+-- data <= 
+-- "00100100" after 25 ns, "00000011" after 1000 ns,
+-- "00101000" after 6000 ns, "00000001" after 6900 ns,
+-- "00101000" after 11700 ns, "00000001" after 12600 ns;
 
 	wait;
 end process stimulus;
 
--- data <= data_int; -- when (we_bar = '0' and mem_clk = '1') else (others => 'Z');
+data <= data_int when (we_bar = '1' or mem_clk = '0') else (others => 'Z');
 
 end architecture test_cpu;
