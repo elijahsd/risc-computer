@@ -15,8 +15,8 @@ write_mem() {
     i2cset -y 0 0x22 0x09 $(printf '0x%x' $value)
 
     # set address
-    i2cset -y 0 0x20 0x09 $(printf '0x%x' $(($(($addr & 240)) / 16)))
-    i2cset -y 0 0x21 0x09 $(printf '0x%x' $(($addr & 15)))
+    i2cset -y 0 0x20 0x09 $(printf '0x%x' $(($(($addr & 65280)) / 256)))
+    i2cset -y 0 0x21 0x09 $(printf '0x%x' $(($addr & 255)))
 
     # Perform write
     i2cset -y 0 0x23 0x09 0x03
